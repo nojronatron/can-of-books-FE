@@ -17,10 +17,9 @@ Create a small app to track what books have impacted you, and what's recommended
 
 ## Estimates
 
-### Feature Setup and 
+### Feature Setup and Initial Deploy App
 
-Estimated time to completed: ___
-Start time: ___
-Finish time: ___
-Actual time needed to complete: ___
-
+Estimated time to completed:  
+Start time:  
+Finish time:  
+Actual time needed to complete:  
