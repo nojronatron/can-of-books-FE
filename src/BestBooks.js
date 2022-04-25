@@ -9,15 +9,7 @@ class BestBooks extends React.Component {
     }
   }
 
-  componentDidMount() {
-    let getBooksResult = this.getBooks();
-
-    this.setState ({
-      books: getBooksResult,
-    })
-  }
-
-  /* TODO: Make a GET request to your API to fetch all the books from the database  */
+    /* TODO: Make a GET request to your API to fetch all the books from the database  */
   // TODO: put server url in ENV file
   getBooks = async () => {
     let url = 'http://localhost:3001/books';
@@ -29,8 +21,16 @@ class BestBooks extends React.Component {
     catch (error) {
       console.error(error.name + ': ' + error.message);
     }
-    return result;
+    return result.data;
   }
+async componentDidMount() {
+    let getBooksResult = await this.getBooks();
+
+    this.setState ({
+      books: getBooksResult,
+    })
+  }
+
 
   render() {
 
