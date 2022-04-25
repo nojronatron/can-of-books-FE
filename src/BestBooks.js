@@ -1,5 +1,4 @@
 import React from 'react';
-import Axios from 'axios';
 import axios from 'axios';
 
 class BestBooks extends React.Component {
@@ -8,6 +7,14 @@ class BestBooks extends React.Component {
     this.state = {
       books: []
     }
+  }
+
+  componentDidMount() {
+    let getBooksResult = this.getBooks();
+
+    this.setState ({
+      books: getBooksResult,
+    })
   }
 
   /* TODO: Make a GET request to your API to fetch all the books from the database  */
