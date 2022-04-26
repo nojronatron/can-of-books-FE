@@ -17,16 +17,7 @@ class App extends React.Component {
     return (
       <>
         <Router>
-          <Header>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-            </ul>
-          </Header>
+          <Header />
           <Switch>
             <Route exact path="/">
               <BestBooks />
