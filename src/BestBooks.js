@@ -4,9 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Carousel from 'react-bootstrap/Carousel';
 import img from './img/slidetemp.JPG';
 import Image from 'react-bootstrap/Image';
-import {Button, Form, Container} from 'react-bootstrap';
+import {Container} from 'react-bootstrap';
 import AddBook from './AddBook';
-import DeleteButton from './DeleteButton';
+import DeleteButton from './DeleteButton'
 
 require('dotenv').config();
 
@@ -95,7 +95,7 @@ componentDidMount() { this.getBooksResult() }
               {this.state.books.map((element, idx) =>
               (
                 
-              <Carousel.Item key={element._id}>
+              <Carousel.Item key={idx}>
                 <Image
                 className='d-block w-100'
                 src={img}

@@ -1,7 +1,7 @@
 import { Component } from "react";
 import {Button} from 'react-bootstrap';
 
-import FormBooks from './BookFormModal';
+import FormBooks from './FormBooks';
 
 class AddBook extends Component{
     constructor(props) {
