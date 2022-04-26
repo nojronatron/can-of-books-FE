@@ -32,7 +32,7 @@ class Profile extends Component {
           <Card.Body>
             <Card.Title>Raul Zarate</Card.Title>
             <Card.Subtitle>Hungy Like The Wolf</Card.Subtitle>
-            <Card.Text>Raul is a software developer.</Card.Text>
+            <Card.Text>I love the problem solving aspect in tech. No puzzle can't be solved without a team and willingness to fail 10,000 times!</Card.Text>
           </Card.Body>
           <Card.Link href="https://github.com/zaratr">GitHub</Card.Link>
         </Card>
