@@ -6,6 +6,10 @@ import img from './img/slidetemp.JPG';
 import Image from 'react-bootstrap/Image';
 require('dotenv').config();
 
+//constants
+const SERVER = process.env.REACT_APP_SERVER;
+
+
 class BestBooks extends React.Component {
   constructor(props) {
     super(props);
@@ -14,9 +18,9 @@ class BestBooks extends React.Component {
     }
   }
 
-  // TODO: put server url in ENV file
-  getBooks = async () => {
-    let url = 'http://localhost:3001/books';
+
+  getBooks = async () => {//receives our data
+    let url = `${SERVER}/books`;
     let result;
 
     try{
@@ -27,18 +31,17 @@ class BestBooks extends React.Component {
     }
     return result.data;
   }
-async componentDidMount() {
-    let getBooksResult = await this.getBooks();
 
+  getBooksResult = async () =>{//sets our data from getBooks()
+    const result = await this.getBooks();
     this.setState ({
-      books: getBooksResult,
-    })
+          books: result,
+        })
   }
+async componentDidMount() { this.getBooksResult() }
 
 
   render() {
-
-    /* TODO: render all the books in a Carousel */
 
     return (
 
