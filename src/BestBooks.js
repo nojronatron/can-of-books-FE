@@ -40,7 +40,7 @@ class BestBooks extends React.Component {
   }
 
   //awaits all component data
-async componentDidMount() { this.getBooksResult() }
+componentDidMount() { this.getBooksResult() }
 
 
   render() {
