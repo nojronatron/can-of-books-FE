@@ -22,7 +22,7 @@ class BestBooks extends React.Component {
     }
   }
 
-
+  //  route /books is already good
   getBooks = async () => {//receives our data
     let url = `${SERVER}/books`;
     let result;
@@ -43,9 +43,10 @@ class BestBooks extends React.Component {
     })
   }
   /*****************************below day 2 code***********************/
+  // changed route from /add to /books
   addBook = async (book) => {//add a book
     try {
-      let url = `${SERVER}/add`;
+      let url = `${SERVER}/books`;
       let createdBook = await axios.post(url, book);
       this.setState({
         books: [...this.state.books, createdBook]
@@ -54,8 +55,9 @@ class BestBooks extends React.Component {
     catch (error) { console.error(error.name + ': ' + error.message, error.response.data) }
   }
 
+  // changed route from /book/:id to /books/:id
   deleteBook = async (id) => {
-    let url = `${SERVER}/book/${id}`;
+    let url = `${SERVER}/books/${id}`;
     await axios.delete(url);
     let updatedBooks = this.state.books.filter(
       book => book._id !== id
