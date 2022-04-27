@@ -13,7 +13,6 @@ class FormBooks extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target, "<-----------------HERE");
     let book = {
       title: e.target.title.value,
       description: e.target.description.value,
