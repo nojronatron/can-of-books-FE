@@ -7,6 +7,7 @@ import Image from 'react-bootstrap/Image';
 import { Container } from 'react-bootstrap';
 import AddBook from './AddBook';
 import DeleteButton from './DeleteButton'
+import UpdateButton from './DeleteButton'
 
 require('dotenv').config();
 
@@ -68,19 +69,27 @@ class BestBooks extends React.Component {
     })
   }
 
-
-  // handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   let book = {
-  //     title: e.target.title.value,
-  //     description: e.target.description.value,
-  //     status: e.target.status.value,
-  //     etext: e.target.eText.value
-  //   }
-  //   this.postBook(book);
-  // }
-
   /*****************************above day 2 code***********************/
+
+  /*****************************below day 3 code***********************/
+  updateBook = async (bookToUpdate) => {
+    try {
+      let url = `${SERVER}/books/${bookToUpdate._id}`;
+      let updatedBook = await axios.put(url, bookToUpdate);
+      // replace old version of book with new
+      let updatedBookArray = this.state.books.map(book => {
+        return book._id === bookToUpdate._id ? updatedBook.data : book;
+      });
+      this.setState({
+        books: updatedBookArray,
+      })
+    }
+    catch (err) {
+      console.log('An error has occurred: ', err.response.data);
+    }
+  }
+
+  /*****************************above day 3 code***********************/
 
   //awaits all component data
   componentDidMount() { this.getBooksResult() }
@@ -109,6 +118,7 @@ class BestBooks extends React.Component {
                     <h4>{element.description}</h4>
                     <p>{element.status}</p>
                     <DeleteButton id={element._id} deleteBook={this.deleteBook} />
+                    <UpdateButton id={element._id} deleteBook={this.updateBook} />
                   </Carousel.Caption>
                 </Carousel.Item>
               ))}
