@@ -62,7 +62,18 @@ Raul and Jon understand we each have strengths and limitations, and agree to wor
 
 ### Feature Setup and Initial Deploy App
 
-Estimated time to completed:  
-Start time:  
-Finish time:  
-Actual time needed to complete:  
+Estimated time to completed: 3 hours
+Start time:  1300
+Finish time:  1800
+Actual time needed to complete:  3 hours
+
+
+Name of feature: Create and Delete of CRUD
+
+Estimate of time needed to complete: 3 hours
+
+Start time: 1300
+
+Finish time: 1800
+
+Actual time needed to complete: 3 hours
