@@ -1,39 +1,50 @@
-import {Component} from 'react';
-import {Modal, Form, Button} from 'react-bootstrap';
+import { Component } from 'react';
+import { Modal, Form, Button } from 'react-bootstrap';
 
-class FormBooks extends Component
-{
-  constructor(props)
-  {
+class FormBooks extends Component {
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       newBook: {},
       title: '',
       description: ''
     }
   }
-  render(){
-    return(
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target, "<-----------------HERE");
+    let book = {
+      title: e.target.title.value,
+      description: e.target.description.value,
+      status: e.target.status.value,
+      etext: e.target.eText.value,
+      
+     
+    }
+    this.props.addBook(book);
+  }
 
-<Form onSubmit={this.handleSubmit}>
-      <Form.Group controlId='Title of Book'>
-        <Form.Label>title</Form.Label>
-        <Form.Control type="text"/>
-      </Form.Group>
-      <Form.Group controlId='Description of Book'>
-        <Form.Label>description</Form.Label>
-        <Form.Control type="text"/>
-      </Form.Group>
-      <Form.Group controlId='Status of Book'>
-        <Form.Label>status</Form.Label>
-        <Form.Control type="text"/>
-      </Form.Group>
-      <Form.Group controlId='eText'>
-        <Form.Check type="checkbox" label='eText'/>
-      </Form.Group>
-      <Button type="submit">Add Book</Button>
-    </Form>
+  render() {
+    return (
+      <Form onSubmit={this.handleSubmit}>
+        <Form.Group controlId='title'>
+          <Form.Label>title</Form.Label>
+          <Form.Control type="text" />
+        </Form.Group>
+        <Form.Group controlId='description'>
+          <Form.Label>description</Form.Label>
+          <Form.Control type="text" />
+        </Form.Group>
+        <Form.Group controlId='status'>
+          <Form.Label>status</Form.Label>
+          <Form.Control type="text" />
+        </Form.Group>
+        <Form.Group controlId='eText'>
+          <Form.Check type="checkbox" label='eText' />
+        </Form.Group>
+        <Button type='submit'>Add a Book</Button>
+      </Form>
     );
   }
 }

@@ -26,8 +26,9 @@ class AddBook extends Component{
         return(
             <>
             <main>
-                <Button onClick={this.displayModal}>Add a Book</Button>
-                <FormBooks postBooks={this.props.postBooks} modalDisplay={this.state.modalDisplay} hideModal={this.hideModal}/>
+            {/* {console.log(this.props.postBook)} */}
+                <FormBooks addBook={this.props.addBook} modalDisplay={this.state.modalDisplay} hideModal={this.hideModal}/>
+                {/* <Button onClick={this.displayModal}>Add a Book</Button> */}
             </main>
             </>
 
