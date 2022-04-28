@@ -76,4 +76,14 @@ Start time: 1300
 
 Finish time: 1800
 
+Actual time needed to complete: 3
+
+Name of feature: Update CRUD
+
+Estimate of time needed to complete: 3 hours
+
+Start time: 1300
+
+Finish time: 1800
+
 Actual time needed to complete: 3 hours
