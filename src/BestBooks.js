@@ -26,15 +26,11 @@ class BestBooks extends React.Component {
 
   //  route /books is already good
   getBooks = async () => {//receives our data
-    console.log('entered getBooks callback.');
     let url = `${SERVER}/books`;
-    //let url = 'http://localhost:3001/books';
-    console.log('url: ', url);
     let result;
 
     try {
       result = await axios.get(url);
-      console.log('result: ', result);
     }
     catch (error) {
       console.error(error.name + ': ' + error.message);
@@ -48,6 +44,7 @@ class BestBooks extends React.Component {
       books: result,
     })
   }
+
   /*****************************below day 2 code***********************/
   // changed route from /add to /books
   addBook = async (book) => {//add a book
@@ -55,7 +52,7 @@ class BestBooks extends React.Component {
       let url = `${SERVER}/books`;
       let createdBook = await axios.post(url, book);
       this.setState({
-        books: [...this.state.books, createdBook]
+        books: [...this.state.books, createdBook.data]
       })
     }
     catch (error) { console.error(error.name + ': ' + error.message, error.response.data) }
@@ -107,13 +104,11 @@ class BestBooks extends React.Component {
     });
   };
 
-
   displayModalHandler = () => {
     this.setState({
       shouldModalBeDisplayed: true
     });
   };
-
 
   updateBookHandler = (book) => {//this handles from child
     this.setState({
@@ -141,58 +136,53 @@ class BestBooks extends React.Component {
     return (
       <>
         <div>
-          {this.state.books ? (
-            <Container className='mt-5'>
-              <Carousel wrap={false}>
-                
-                {this.state.books.length === 0 ? (<h2>No books in store.</h2>) : (<h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>)}
-                
-                {this.state.books.map((element) =>
-                (
+          <Container className='mt-5'>
+            <Carousel wrap={false}>
 
-                  <Carousel.Item key={element._id}>
-                    <Image
-                      className='d-block w-100'
-                      src={img}
-                      alt='a slide'
-                    />
-                    <Carousel.Caption>
-                      <h3>{element.title}</h3>
-                      <h4>{element.description}</h4>
-                      <p>{element.status}</p>
-                      {/* //this passes an _id and a function deletebook */}
-                      <Button onClick={() => this.deleteBook(element._id)} > {/* //non auto delete. must use () => */}
-                        Delete Button
-                      </Button>
-                      {/* //passes an _id and a function Update book */}
-                      <Button
-                        onClick={() => this.helperUpdateBook(element)}
-                      >
-                        Update Book
-                      </Button>
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                ))}
-              </Carousel>
+              {this.state.books.length === 0 ? (<h2>No books in store.</h2>) : (<h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>)}
 
-              <Button
-                onClick={() => this.displayModalHandler()}
-              >Add a Book</Button>
-              <FormBooks
-                displayModal={this.state.shouldModalBeDisplayed}
-                hideModal={this.hideModalHandler}
-                addBookHandler={this.addBook}
-              />
-              <UpdateFormBooks
-                shouldUpdateModalBeDisplayed={this.state.shouldUpdateModalBeDisplayed}
-                hideUpdateModalHandler={this.hideUpdateModalHandler}
-                updateBookHandler={this.updateBookHandler}
-                book={this.state.bookToUpdate}
-              />
-            </Container>
-          )
-            : <h1>No books to display.</h1>
-          }
+              {this.state.books.map((element) =>
+              (
+                <Carousel.Item key={element._id}>
+                  <Image
+                    className='d-block w-100'
+                    src={img}
+                    alt='a slide'
+                  />
+                  <Carousel.Caption>
+                    <h3>{element.title}</h3>
+                    <h4>{element.description}</h4>
+                    <p>{element.status}</p>
+                    {/* //this passes an _id and a function deletebook */}
+                    <Button onClick={() => this.deleteBook(element._id)} > {/* //non auto delete. must use () => */}
+                      Delete Book
+                    </Button>
+                    {/* //passes an _id and a function Update book */}
+                    <Button
+                      onClick={() => this.helperUpdateBook(element)}
+                    >
+                      Update Book
+                    </Button>
+                  </Carousel.Caption>
+                </Carousel.Item>
+              ))}
+            </Carousel>
+
+            <Button
+              onClick={() => this.displayModalHandler()}
+            >Add a Book</Button>
+            <FormBooks
+              displayModal={this.state.shouldModalBeDisplayed}
+              hideModal={this.hideModalHandler}
+              addBookHandler={this.addBook}
+            />
+            <UpdateFormBooks
+              shouldUpdateModalBeDisplayed={this.state.shouldUpdateModalBeDisplayed}
+              hideUpdateModalHandler={this.hideUpdateModalHandler}
+              updateBookHandler={this.updateBookHandler}
+              book={this.state.bookToUpdate}
+            />
+          </Container>
         </div>
       </>
     )
