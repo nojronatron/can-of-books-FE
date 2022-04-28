@@ -8,6 +8,7 @@ import { Button, Container, Modal } from 'react-bootstrap';
 import FormBooks from './FormBooks';
 import DeleteButton from './DeleteButton';
 import UpdateButton from './UpdateButton';
+import UpdateFormBooks from './UpdateFormBooks';
 
 require('dotenv').config();
 
@@ -20,15 +21,17 @@ class BestBooks extends React.Component {
     super(props);
     this.state = {
       books: [],
+      bookToUpdate: {},//is a new book to update the set of books array
       shouldModalBeDisplayed: false,
-    }
+      shouldUpdateModalBeDisplayed: false,
+    };
   }
 
   //  route /books is already good
   getBooks = async () => {//receives our data
     console.log('entered getBooks callback.');
-    //let url = `${SERVER}/books`;
-    let url = 'http://localhost:3001/books';
+    let url = `${SERVER}/books`;
+    //let url = 'http://localhost:3001/books';
     console.log('url: ', url);
     let result;
 
@@ -63,7 +66,7 @@ class BestBooks extends React.Component {
 
   // changed route from /book/:id to /books/:id
   deleteBook = async (id) => {
-    let url = `${SERVER}/books/${id}`;
+    let url = `${SERVER}/book/${id}`;
     await axios.delete(url);
     let updatedBooks = this.state.books.filter(
       book => book._id !== id
@@ -78,8 +81,9 @@ class BestBooks extends React.Component {
 
   /*****************************below day 3 code***********************/
   updateBook = async (bookToUpdate) => {
+
     try {
-      let url = `${SERVER}/books/${bookToUpdate._id}`;
+      let url = `${SERVER}/book/${bookToUpdate._id}`;
       let updatedBook = await axios.put(url, bookToUpdate);
       // replace old version of book with new
       let updatedBookArray = this.state.books.map(book => {
@@ -93,12 +97,19 @@ class BestBooks extends React.Component {
       console.log('An error has occurred: ', err.response.data);
     }
   }
-
+  
   hideModalHandler = () => {
     this.setState({
       shouldModalBeDisplayed: false
     });
   };
+
+  hideUpdateModalHandler = () => {
+    this.setState({
+      shouldUpdateModalBeDisplayed: false
+    });
+  };
+
 
   displayModalHandler = () => {
     this.setState({
@@ -106,6 +117,23 @@ class BestBooks extends React.Component {
     });
   };
 
+
+  updateBookHandler = (book) =>{//this handles from child
+    this.setState({
+      shouldUpdateModalBeDisplayed:false
+    });
+    this.updateBook(book);//this does the updating
+  }
+
+  helperUpdateBook = (aBook) =>{
+    // we want to pass props to child
+    this.setState({
+      bookToUpdate : aBook,
+      shouldUpdateModalBeDisplayed:true
+    })
+    // send a showmodal property so that updateFormBooks will apear
+
+  }
   /*****************************above day 3 code***********************/
 
   //awaits all component data
@@ -120,7 +148,7 @@ class BestBooks extends React.Component {
             <Container className='mt-5'>
               <Carousel>
                 <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
-                {this.state.books.map((element, idx) =>
+                {this.state.books.map((element) =>
                 (
 
                   <Carousel.Item key={element._id}>
@@ -133,10 +161,17 @@ class BestBooks extends React.Component {
                       <h3>{element.title}</h3>
                       <h4>{element.description}</h4>
                       <p>{element.status}</p>
+                    {/* //this passes an _id and a function deletebook */}
+                    <Button onClick={() => this.deleteBook(element._id)} > {/* //non auto delete. must use () => */}
+                      Delete Button
+                    </Button>
+                    {/* //passes an _id and a function Update book */}
+                    <Button 
+                      onClick={ () =>  this.helperUpdateBook(element)} 
+                    >
+                      Update Me Button
+                    </Button>
                     </Carousel.Caption>
-                    <DeleteButton id={`${element._id}`} deleteBook={this.deleteBook} />
-                    <UpdateButton id={`${element._id}`} updateBook={this.updateBook} />
-                    {/* <Button type="button" id={element._id} openModalForm={this.addBookForm} /> */}
                   </Carousel.Item>
                 ))}
               </Carousel>
@@ -154,6 +189,13 @@ class BestBooks extends React.Component {
           <FormBooks
             displayModal={this.state.shouldModalBeDisplayed}
             hideModal={this.hideModalHandler}
+            addBookHandler = {this.addBook}
+          />
+          <UpdateFormBooks
+            shouldUpdateModalBeDisplayed={this.state.shouldUpdateModalBeDisplayed}
+            hideUpdateModalHandler={this.hideUpdateModalHandler}
+            updateBookHandler={this.updateBookHandler}
+            book={this.state.bookToUpdate}
           />
         </Container>
       </>

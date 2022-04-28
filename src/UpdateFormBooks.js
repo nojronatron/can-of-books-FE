@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 
-class FormBooks extends Component {
+class UpdateFormBooks extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,37 +17,35 @@ class FormBooks extends Component {
       title: e.target.title.value,
       description: e.target.description.value,
       status: e.target.status.value,
-      etext: e.target.eText.value,
+      _id: this.props.book._id
     }
-    this.props.hideModal();
-    this.props.addBookHandler(book);
-  }
+    this.props.updateBookHandler(book);//user data is in book only. no Id 
+ }
+
+
 
   render() {
     return (
       <Modal
-        show={this.props.displayModal}
-        onHide={this.props.hideModal}>
+        show={this.props.shouldUpdateModalBeDisplayed}
+        onHide={this.props.hideUpdateModalHandler}>
         <Modal.Header closeButton></Modal.Header>
-        <Modal.Title>Add a Book</Modal.Title>
+        <Modal.Title>Update Book a Book</Modal.Title>
         <Modal.Body>
           <Form onSubmit={this.handleSubmit}>
             <Form.Group controlId='title'>
               <Form.Label>title</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control type="text" placeholder={this.props.book.title}/>
             </Form.Group>
             <Form.Group controlId='description'>
               <Form.Label>description</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control type="text" placeholder={this.props.book.description} />
             </Form.Group>
             <Form.Group controlId='status'>
               <Form.Label>status</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control type="text" placeholder={this.props.book.status}/>
             </Form.Group>
-            <Form.Group controlId='eText'>
-              <Form.Check type="checkbox" label='eText' />
-            </Form.Group>
-            <Button type='submit'>Add a Book</Button>
+            <Button type='submit'>Update a Book</Button>
           </Form>
         </Modal.Body>
       </Modal>
@@ -55,4 +53,4 @@ class FormBooks extends Component {
   }
 }
 
-export default FormBooks;
+export default UpdateFormBooks;
