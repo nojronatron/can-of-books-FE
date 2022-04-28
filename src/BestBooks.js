@@ -4,10 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Carousel from 'react-bootstrap/Carousel';
 import img from './img/slidetemp.JPG';
 import Image from 'react-bootstrap/Image';
-import { Button, Container, Modal } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import FormBooks from './FormBooks';
-import DeleteButton from './DeleteButton';
-import UpdateButton from './UpdateButton';
 import UpdateFormBooks from './UpdateFormBooks';
 
 require('dotenv').config();
