@@ -4,9 +4,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Carousel from 'react-bootstrap/Carousel';
 import img from './img/slidetemp.JPG';
 import Image from 'react-bootstrap/Image';
-import { Container } from 'react-bootstrap';
-import AddBook from './AddBook';
-import DeleteButton from './DeleteButton'
+import { Button, Container, Modal } from 'react-bootstrap';
+import FormBooks from './FormBooks';
+import DeleteButton from './DeleteButton';
+import UpdateButton from './UpdateButton';
+import UpdateFormBooks from './UpdateFormBooks';
 
 require('dotenv').config();
 
@@ -18,17 +20,24 @@ class BestBooks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
-    }
+      books: [],
+      bookToUpdate: {},//is a new book to update the set of books array
+      shouldModalBeDisplayed: false,
+      shouldUpdateModalBeDisplayed: false,
+    };
   }
 
-
+  //  route /books is already good
   getBooks = async () => {//receives our data
+    console.log('entered getBooks callback.');
     let url = `${SERVER}/books`;
+    //let url = 'http://localhost:3001/books';
+    console.log('url: ', url);
     let result;
 
     try {
       result = await axios.get(url);
+      console.log('result: ', result);
     }
     catch (error) {
       console.error(error.name + ': ' + error.message);
@@ -43,9 +52,10 @@ class BestBooks extends React.Component {
     })
   }
   /*****************************below day 2 code***********************/
+  // changed route from /add to /books
   addBook = async (book) => {//add a book
     try {
-      let url = `${SERVER}/add`;
+      let url = `${SERVER}/books`;
       let createdBook = await axios.post(url, book);
       this.setState({
         books: [...this.state.books, createdBook]
@@ -54,72 +64,138 @@ class BestBooks extends React.Component {
     catch (error) { console.error(error.name + ': ' + error.message, error.response.data) }
   }
 
+  // changed route from /book/:id to /books/:id
   deleteBook = async (id) => {
     let url = `${SERVER}/book/${id}`;
     await axios.delete(url);
     let updatedBooks = this.state.books.filter(
       book => book._id !== id
-      );
+    );
 
     this.setState({
       books: updatedBooks
     })
   }
 
-
-  // handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   let book = {
-  //     title: e.target.title.value,
-  //     description: e.target.description.value,
-  //     status: e.target.status.value,
-  //     etext: e.target.eText.value
-  //   }
-  //   this.postBook(book);
-  // }
-
   /*****************************above day 2 code***********************/
+
+  /*****************************below day 3 code***********************/
+  updateBook = async (bookToUpdate) => {
+
+    try {
+      let url = `${SERVER}/book/${bookToUpdate._id}`;
+      let updatedBook = await axios.put(url, bookToUpdate);
+      // replace old version of book with new
+      let updatedBookArray = this.state.books.map(book => {
+        return book._id === bookToUpdate._id ? updatedBook.data : book;
+      });
+      this.setState({
+        books: updatedBookArray,
+      })
+    }
+    catch (err) {
+      console.log('An error has occurred: ', err.response.data);
+    }
+  }
+  
+  hideModalHandler = () => {
+    this.setState({
+      shouldModalBeDisplayed: false
+    });
+  };
+
+  hideUpdateModalHandler = () => {
+    this.setState({
+      shouldUpdateModalBeDisplayed: false
+    });
+  };
+
+
+  displayModalHandler = () => {
+    this.setState({
+      shouldModalBeDisplayed: true
+    });
+  };
+
+
+  updateBookHandler = (book) =>{//this handles from child
+    this.setState({
+      shouldUpdateModalBeDisplayed:false
+    });
+    this.updateBook(book);//this does the updating
+  }
+
+  helperUpdateBook = (aBook) =>{
+    // we want to pass props to child
+    this.setState({
+      bookToUpdate : aBook,
+      shouldUpdateModalBeDisplayed:true
+    })
+    // send a showmodal property so that updateFormBooks will apear
+
+  }
+  /*****************************above day 3 code***********************/
 
   //awaits all component data
   componentDidMount() { this.getBooksResult() }
-
 
   render() {
 
     return (
       <>
         <div>
-        {this.state.books && (
-          <Container className='mt-5'>
-            <Carousel>
-              <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
-              {this.state.books.map((element, idx) =>
-              (
+          {this.state.books ? (
+            <Container className='mt-5'>
+              <Carousel>
+                <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
+                {this.state.books.map((element) =>
+                (
 
-                <Carousel.Item key={element._id}>
-                  <Image
-                    className='d-block w-100'
-                    src={img}
-                    alt='a slide'
-                  />
-                  <Carousel.Caption>
-                    <h3>{element.title}</h3>
-                    <h4>{element.description}</h4>
-                    <p>{element.status}</p>
-                    <DeleteButton id={element._id} deleteBook={this.deleteBook} />
-                  </Carousel.Caption>
-                </Carousel.Item>
-              ))}
-            </Carousel>
-          </Container>
+                  <Carousel.Item key={element._id}>
+                    <Image
+                      className='d-block w-100'
+                      src={img}
+                      alt='a slide'
+                    />
+                    <Carousel.Caption>
+                      <h3>{element.title}</h3>
+                      <h4>{element.description}</h4>
+                      <p>{element.status}</p>
+                    {/* //this passes an _id and a function deletebook */}
+                    <Button onClick={() => this.deleteBook(element._id)} > {/* //non auto delete. must use () => */}
+                      Delete Button
+                    </Button>
+                    {/* //passes an _id and a function Update book */}
+                    <Button 
+                      onClick={ () =>  this.helperUpdateBook(element)} 
+                    >
+                      Update Me Button
+                    </Button>
+                    </Carousel.Caption>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+            </Container>
 
-        )
-        }
+          )
+            : <h1>No books to display.</h1>
+          }
         </div>
 
         <Container>
-          {/* {console.log(this.postBook)} */}
-          <AddBook addBook={this.addBook} 
+          <Button
+            onClick={() => this.displayModalHandler()}
+          >Add a Book</Button>
+          <FormBooks
+            displayModal={this.state.shouldModalBeDisplayed}
+            hideModal={this.hideModalHandler}
+            addBookHandler = {this.addBook}
+          />
+          <UpdateFormBooks
+            shouldUpdateModalBeDisplayed={this.state.shouldUpdateModalBeDisplayed}
+            hideUpdateModalHandler={this.hideUpdateModalHandler}
+            updateBookHandler={this.updateBookHandler}
+            book={this.state.bookToUpdate}
           />
         </Container>
       </>
