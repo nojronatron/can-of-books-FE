@@ -4,17 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Carousel from 'react-bootstrap/Carousel';
 import img from './img/slidetemp.JPG';
 import Image from 'react-bootstrap/Image';
-import { Button, Container, Modal } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import FormBooks from './FormBooks';
-import DeleteButton from './DeleteButton';
-import UpdateButton from './UpdateButton';
 import UpdateFormBooks from './UpdateFormBooks';
 
 require('dotenv').config();
 
 //constants
 const SERVER = process.env.REACT_APP_SERVER;
-
 
 class BestBooks extends React.Component {
   constructor(props) {
@@ -97,7 +94,7 @@ class BestBooks extends React.Component {
       console.log('An error has occurred: ', err.response.data);
     }
   }
-  
+
   hideModalHandler = () => {
     this.setState({
       shouldModalBeDisplayed: false
@@ -118,18 +115,18 @@ class BestBooks extends React.Component {
   };
 
 
-  updateBookHandler = (book) =>{//this handles from child
+  updateBookHandler = (book) => {//this handles from child
     this.setState({
-      shouldUpdateModalBeDisplayed:false
+      shouldUpdateModalBeDisplayed: false
     });
     this.updateBook(book);//this does the updating
   }
 
-  helperUpdateBook = (aBook) =>{
+  helperUpdateBook = (aBook) => {
     // we want to pass props to child
     this.setState({
-      bookToUpdate : aBook,
-      shouldUpdateModalBeDisplayed:true
+      bookToUpdate: aBook,
+      shouldUpdateModalBeDisplayed: true
     })
     // send a showmodal property so that updateFormBooks will apear
 
@@ -146,8 +143,10 @@ class BestBooks extends React.Component {
         <div>
           {this.state.books ? (
             <Container className='mt-5'>
-              <Carousel>
-                <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
+              <Carousel wrap={false}>
+                
+                {this.state.books.length === 0 ? (<h2>No books in store.</h2>) : (<h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>)}
+                
                 {this.state.books.map((element) =>
                 (
 
@@ -161,43 +160,40 @@ class BestBooks extends React.Component {
                       <h3>{element.title}</h3>
                       <h4>{element.description}</h4>
                       <p>{element.status}</p>
-                    {/* //this passes an _id and a function deletebook */}
-                    <Button onClick={() => this.deleteBook(element._id)} > {/* //non auto delete. must use () => */}
-                      Delete Button
-                    </Button>
-                    {/* //passes an _id and a function Update book */}
-                    <Button 
-                      onClick={ () =>  this.helperUpdateBook(element)} 
-                    >
-                      Update Me Button
-                    </Button>
+                      {/* //this passes an _id and a function deletebook */}
+                      <Button onClick={() => this.deleteBook(element._id)} > {/* //non auto delete. must use () => */}
+                        Delete Button
+                      </Button>
+                      {/* //passes an _id and a function Update book */}
+                      <Button
+                        onClick={() => this.helperUpdateBook(element)}
+                      >
+                        Update Book
+                      </Button>
                     </Carousel.Caption>
                   </Carousel.Item>
                 ))}
               </Carousel>
-            </Container>
 
+              <Button
+                onClick={() => this.displayModalHandler()}
+              >Add a Book</Button>
+              <FormBooks
+                displayModal={this.state.shouldModalBeDisplayed}
+                hideModal={this.hideModalHandler}
+                addBookHandler={this.addBook}
+              />
+              <UpdateFormBooks
+                shouldUpdateModalBeDisplayed={this.state.shouldUpdateModalBeDisplayed}
+                hideUpdateModalHandler={this.hideUpdateModalHandler}
+                updateBookHandler={this.updateBookHandler}
+                book={this.state.bookToUpdate}
+              />
+            </Container>
           )
             : <h1>No books to display.</h1>
           }
         </div>
-
-        <Container>
-          <Button
-            onClick={() => this.displayModalHandler()}
-          >Add a Book</Button>
-          <FormBooks
-            displayModal={this.state.shouldModalBeDisplayed}
-            hideModal={this.hideModalHandler}
-            addBookHandler = {this.addBook}
-          />
-          <UpdateFormBooks
-            shouldUpdateModalBeDisplayed={this.state.shouldUpdateModalBeDisplayed}
-            hideUpdateModalHandler={this.hideUpdateModalHandler}
-            updateBookHandler={this.updateBookHandler}
-            book={this.state.bookToUpdate}
-          />
-        </Container>
       </>
     )
   }
