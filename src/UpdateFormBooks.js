@@ -22,7 +22,7 @@ class UpdateFormBooks extends Component {
     
     let tempTitle = this.state.userChangedTitle ? this.state.userInputTitle : e.target.title.value;
     let tempDescription = this.state.userChangedDescription ? this.state.userInputDescription : e.target.description.value;
-    let tempStatus = this.state.userChangedStatus ? this.state.userInputStatus : e.target.description.value;
+    let tempStatus = this.state.userChangedStatus ? this.state.userInputStatus : e.target.status.value;
 
     let book = {
       title: tempTitle,
@@ -69,21 +69,21 @@ handleUserUpdateStatus = (event) => {
               <Form.Control 
                 onChange={this.handleUserUpdateTitle}
                 type="text" 
-                placeholder={this.props.book.title}/>
+                defaultValue={this.props.book.title}/>
             </Form.Group>
             <Form.Group controlId='description'>
               <Form.Label>description</Form.Label>
               <Form.Control 
                 onChange={this.handleUserUpdateDescription}
                 type="text" 
-                placeholder={this.props.book.description} />
+                defaultValue={this.props.book.description} />
             </Form.Group>
             <Form.Group controlId='status'>
               <Form.Label>status</Form.Label>
               <Form.Control 
                 onChange={this.handleUserUpdateStatus}
                 type="text" 
-                placeholder={this.props.book.status}/>
+                defaultValue={this.props.book.status}/>
             </Form.Group>
             <Button type='submit'>Update a Book</Button>
           </Form>
