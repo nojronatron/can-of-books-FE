@@ -19,9 +19,9 @@ The front end is deployed to [Netlify](https://spontaneous-frangipane-cf3f7d.net
 
 ## Architecture
 
-See the architectural plan drawing in the root of the repo.  
+See the architectural drawing in the root of the repo.  
 
-![]()  
+![Architecture Drawing](./Can%20of%20Books%20Architecture.jpg)  
 
 ## Change Log
 
