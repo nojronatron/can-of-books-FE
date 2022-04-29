@@ -1,7 +1,7 @@
 # Project Can Of Books
 
 Authors: Jon Rumsey and Raul Zarate
-Version: 1.0.0
+Version: 3.0.0
 
 ## Overview
 
@@ -18,6 +18,10 @@ The front end is deployed to [Netlify](https://spontaneous-frangipane-cf3f7d.net
 1. Run `npm start` to launch a new browser window, running this app.  
 
 ## Architecture
+
+See the architectural plan drawing in the root of the repo.  
+
+![]()  
 
 ## Change Log
 
@@ -67,18 +71,7 @@ Start time:  1300
 Finish time:  1800
 Actual time needed to complete:  3 hours
 
-
-Name of feature: Create and Delete of CRUD
-
-Estimate of time needed to complete: 3 hours
-
-Start time: 1300
-
-Finish time: 1800
-
-Actual time needed to complete: 3
-
-Name of feature: Update CRUD
+### Feature Create and Delete of CRUD
 
 Estimate of time needed to complete: 3 hours
 
@@ -86,4 +79,14 @@ Start time: 1300
 
 Finish time: 1800
 
-Actual time needed to complete: 3 hours
+Actual time needed to complete: 5
+
+### Feature Update CRUD
+
+Estimate of time needed to complete: 3 hours
+
+Start time: 1300
+
+Finish time: 2130
+
+Actual time needed to complete: 8 hours
