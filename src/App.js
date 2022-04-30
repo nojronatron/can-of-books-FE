@@ -6,6 +6,7 @@ import Footer from './Footer';
 import Header from './Header';
 import LoginButton from './Login.js';
 import LogoutButton from './Logout.js';
+import Profile from './User.js';
 
 import {
   BrowserRouter as Router,
@@ -23,21 +24,24 @@ class App extends React.Component {
           <Header />
           <Switch>
             <Route exact path="/">
-            <div>
-              {
-                this.props.auth0.isAuthenticated
-                  ? <LogoutButton />
-                  : <LoginButton />
-              }
-              {
-                this.props.auth0.isAuthenticated
-                  ? <BestBooks />
-                  : <h2>Please login</h2>
-              }
-            </div>
+              <div>
+                {
+                  this.props.auth0.isAuthenticated
+                    ? <LogoutButton />
+                    : <LoginButton />
+                }
+                {
+                  this.props.auth0.isAuthenticated
+                    ? <BestBooks />
+                    : <h2>Please login</h2>
+                }
+              </div>
             </Route>
             <Route path="/about">
               <About />
+            </Route>
+            <Route path="/profile">
+              <Profile />
             </Route>
           </Switch>
           <Footer />

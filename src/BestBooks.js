@@ -7,6 +7,7 @@ import Image from 'react-bootstrap/Image';
 import { Button, Container } from 'react-bootstrap';
 import FormBooks from './FormBooks';
 import UpdateFormBooks from './UpdateFormBooks';
+import { withAuth0 } from '@auth0/auth0-react';
 
 require('dotenv').config();
 
@@ -26,23 +27,41 @@ class BestBooks extends React.Component {
 
   //  route /books is already good
   getBooks = async () => {//receives our data
-    let url = `${SERVER}/books`;
-    let result;
+    if (this.props.auth0.isAuthenticated) {
+      // get JWT
+      const res = await this.props.auth0.getIdTokenClaims();
 
-    try {
-      result = await axios.get(url);
+      // capture jwt from res. _ _ r a w
+      const jwt = res.__raw;
+      console.log(jwt); // goal for todays lab
+
+      // axios req with config object
+      const config = {
+        method: 'get',
+        baseURL: process.env.REACT_APP_SERVER,
+        url: '/books',
+        headers: { 'Authorization': `Bearer ${jwt}` }
+      }
+      console.log('config', config);
+
+      try {
+        const result = await axios(config); // axios call with config object
+        console.log('result.data', result.data);
+        return result.data;
+      }
+      catch (error) {
+        console.error(error.name + ": " + error.message);
+      }
     }
-    catch (error) {
-      console.error(error.name + ': ' + error.message);
-    }
-    return result.data;
   }
 
   getBooksResult = async () => {//sets our data from getBooks()
     const result = await this.getBooks();
-    this.setState({
-      books: result,
-    })
+    if (result) {
+      this.setState({
+        books: result,
+      })
+    }
   }
 
   /*****************************below day 2 code***********************/
@@ -129,10 +148,11 @@ class BestBooks extends React.Component {
   /*****************************above day 3 code***********************/
 
   //awaits all component data
-  componentDidMount() { this.getBooksResult() }
+  componentDidMount() { this.getBooksResult(); }
 
   render() {
-
+    console.log('this.props.auth0.isAuthenticated: ', this.props.auth0.isAuthenticated);
+    console.log('this.props.auth0.user: ', this.props.auth0.user);
     return (
       <>
         <div>
@@ -189,4 +209,4 @@ class BestBooks extends React.Component {
   }
 }
 
-export default BestBooks;
+export default withAuth0(BestBooks);
