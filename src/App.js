@@ -1,16 +1,17 @@
 import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
-import BestBooks from './BestBooks';
+import { withAuth0 } from '@auth0/auth0-react';
 import About from './About.js';
+import BestBooks from './BestBooks';
+import Footer from './Footer';
+import Header from './Header';
 import LoginButton from './Login.js';
 import LogoutButton from './Logout.js';
+
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
-import { withAuth0 } from '@auth0/auth0-react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -23,7 +24,6 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/">
             <div>
-              <h1>Auth0</h1>
               {
                 this.props.auth0.isAuthenticated
                   ? <LogoutButton />
